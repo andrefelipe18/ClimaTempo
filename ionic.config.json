@@ -1,0 +1,7 @@
+{
+  "name": "onuxt-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
