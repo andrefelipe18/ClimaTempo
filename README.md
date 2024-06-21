@@ -1,35 +1,27 @@
-# onuxt-ionic
+# ClimaTempo com Ionic + Nuxt
 
-## Usage
+## Objetivo da aplicação
 
-### GitHub Template
+> O aplicativo deve permitir ao usuário rastrear as condições meteorológicas de diferentes locais com base na geolocalização e armazenar as informações de consulta para acesso futuro.
 
-[Create a repo from this template on GitHub](https://github.com/oumarbarry/onuxt-ionic/generate)
+# REQUISITOS DO APLICATIVO: 
 
-### Clone to local
+1. Geolocalização: - O aplicativo deve solicitar permissão do usuário para acessar a localização atual. - Utilizar a API de geolocalização do Capacitor para obter as coordenadas (latitude e longitude) 
+atuais do usuário. 
 
-Use [giget](https://github.com/unjs/giget) to clone to your machine with an empty git history:
+2. API REST: - Consumir uma API REST de informações meteorológicas (por exemplo, OpenWeatherMap ou 
+WeatherAPI) para obter os dados meteorológicos com base nas coordenadas obtidas. - A API deve fornecer informações como temperatura, umidade, descrição do tempo e ícone 
+representativo das condições meteorológicas. 
 
-```bash
-bunx giget@latest gh:oumarbarry/onuxt-ionic nuxt-app --install --shell
-```
+3. Storage: - Utilizar o Capacitor Storage para armazenar localmente as consultas realizadas, incluindo as 
+informações meteorológicas e a data/hora da consulta. - Implementar uma lista de histórico de consultas armazenadas, permitindo ao usuário 
+visualizar os dados meteorológicos de consultas anteriores.
 
-## Running on native devices with Live Reload
+# FUNCIONALIDADES DETALHADAS: 
 
-Either, just open the Ionic VSCode Extension, from your sidebar  -> Settings -> Activate Live Reload. Then, Run -> Android/iOS.
+1. Tela Principal: - Botão "Obter Localização Atual" que, ao ser clicado, obtém a localização do usuário e exibe 
+as informações meteorológicas atuais. - Mostrar dados como temperatura, umidade, descrição do tempo e um ícone representativo 
+do tempo atual. 
 
-Or, just run the following in the terminal:
-
-```bash
-bunx ionic cap run ios --livereload --external # for iOS
-
-bunx ionic cap run android --livereload --external # for Android
-```
-
-That's it ! Enjoy Live Reload on your physical device / emulator / simulator.
-
-## Docs
-
-- [Nuxt](https://nuxt.com)
-- [Ionic](https://ionicframework.com/docs/components)
-- [nuxt-ionic](https://ionic.nuxtjs.org) module
+2. Histórico de Consultas: - Exibir uma lista das consultas anteriores armazenadas. - Cada item da lista deve mostrar a data/hora da consulta e um resumo das condições 
+meteorológicas (por exemplo, "12/06/2024 14:30 - Temp: 25°C, Ensolarado").
