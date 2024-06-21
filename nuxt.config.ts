@@ -3,6 +3,12 @@ export default defineNuxtConfig({
 
   devtools: { enabled: false },
 
+  runtimeConfig: {
+    public: {
+      apiSecret: '',
+    }
+  },
+
   app: {
     pageTransition: false,
     layoutTransition: false,

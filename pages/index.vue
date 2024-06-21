@@ -6,6 +6,7 @@ const coordinates = ref();
 const latitude = ref();
 const longitude = ref();
 const weatherInfos = ref();
+const config = useRuntimeConfig()
 
 const getLocation = async () => {
   coordinates.value = (await Geolocation.getCurrentPosition()).coords;
@@ -24,7 +25,8 @@ const getWeather = async () => {
   latitude.value = coords.latitude;
   longitude.value = coords.longitude;
 
-  let url = `https://api.weatherapi.com/v1/current.json?key=f133019b1dac470ba92141812242106&q=${latitude.value},${longitude.value}&lang=pt`;
+  const apiKey = config.public.apiSecret;
+  let url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude.value},${longitude.value}&lang=pt`;
 
   const response = await fetch(url);
   const data = await response.json();
