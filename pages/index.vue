@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { Geolocation } from '@capacitor/geolocation';
 import { Preferences } from '@capacitor/preferences';
+import type FormattedWeather from '@/types/FormattedWeather';
 
 const coordinates = ref();
-const latitude = ref();
-const longitude = ref();
 const weatherInfos = ref();
 const config = useRuntimeConfig()
 
-const getLocation = async () => {
+async function getLocation () {
   coordinates.value = (await Geolocation.getCurrentPosition()).coords;
 
   await Preferences.set({
@@ -17,16 +16,33 @@ const getLocation = async () => {
   });
 
   weatherInfos.value = await getWeather();
-};
+}
 
-const getWeather = async () => {
+async function getCoords() {
   const prefs = await Preferences.get({ key: "coords" });
-  const coords = prefs.value ? JSON.parse(prefs.value) : null;
-  latitude.value = coords.latitude;
-  longitude.value = coords.longitude;
+  return prefs.value ? JSON.parse(prefs.value) : null;
+}
 
+function buildWeatherApiUrl(apiKey: string, latitude: string, longitude: string) {
+  return `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}&lang=pt`;
+}
+
+async function storeWeatherData(formattedData: FormattedWeather) {
+  const { value } = await Preferences.get({ key: "lastWeather" });
+  const weatherData = value ? [...JSON.parse(value), formattedData] : [formattedData];
+  await Preferences.set({
+    key: "lastWeather",
+    value: JSON.stringify(weatherData)
+  });
+}
+
+async function getWeather() {
+  const coords = await getCoords();
+  if (!coords) return null; // Handle error or no coords case
+
+  const { latitude, longitude } = coords;
   const apiKey = config.public.apiSecret;
-  let url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude.value},${longitude.value}&lang=pt`;
+  const url = buildWeatherApiUrl(apiKey, latitude, longitude);
 
   const response = await fetch(url);
   const data = await response.json();
@@ -47,35 +63,20 @@ const getWeather = async () => {
     })
   };
 
-  const { value } = await Preferences.get({ key: "lastWeather" });
-
-  if (value) {
-    await Preferences.set({
-      key: "lastWeather",
-      value: JSON.stringify([...JSON.parse(value), formattedData])
-    });
-  } else {
-    await Preferences.set({
-      key: "lastWeather",
-      value: JSON.stringify([formattedData])
-    });
-  }
+  await storeWeatherData(formattedData);
 
   return data.current;
-};
+}
 
-const previousWeather = async () => {
+async function previousWeather () {
   await navigateTo("/history");
-};
+}
 
 </script>
+
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>ClimaTempo App (Nuxt + Ionic)</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <Header title="ClimaTempo App (Nuxt + Ionic)" />
 
     <ion-content>
       <ion-item v-if="weatherInfos">
@@ -86,9 +87,9 @@ const previousWeather = async () => {
           <h2>{{ weatherInfos.condition.text }}</h2>
           <p>
             Temperatura: {{ weatherInfos.temp_c }}°C
-            <br />
+            <br>
             Sensação Térmica: {{ weatherInfos.feelslike_c }}°C
-            <br />
+            <br>
             Atualizado em: {{ weatherInfos.last_updated }}
           </p>
         </ion-label>

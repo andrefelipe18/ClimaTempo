@@ -3,14 +3,14 @@ import { Preferences } from '@capacitor/preferences';
 
 const weatherInfos = ref();
 
-const getPreviousWeather = async () => {
+async function getPreviousWeather () {
   setInterval(async () => {
     const { value } = await Preferences.get({ key: "lastWeather" });
     weatherInfos.value = value ? JSON.parse(value) : [];
   }, 1000);
-};
+}
 
-const remove = async (consulted_at: string) => {
+async function remove (consulted_at: string) {
   const { value } = await Preferences.get({ key: "lastWeather" });
   const weatherInfos = value ? JSON.parse(value) : [];
   const newWeatherInfos = weatherInfos.filter((weather: any) => weather.consulted_at !== consulted_at);
@@ -19,16 +19,17 @@ const remove = async (consulted_at: string) => {
     key: "lastWeather",
     value: JSON.stringify(newWeatherInfos)
   });
-};
+}
 
-const goBack = async () => {
+async function goBack () {
   await navigateTo("/");
-};
+}
 
 onMounted(() => {
   getPreviousWeather();
 });
 </script>
+
 <template>
   <ion-page>
     <ion-header>
@@ -51,7 +52,8 @@ onMounted(() => {
 
               <span class="text-gray-500">Consultado em: {{ weather.consulted_at }}</span>
 
-              <span class="mt-2 bg-red-600 p-1 text-white rounded-md text-center"
+              <span
+                class="mt-2 bg-red-600 p-1 text-white rounded-md text-center"
                 @click="remove(weather.consulted_at)">Remover registro</span>
             </div>
           </ion-label>
