@@ -28,6 +28,8 @@ meteorológicas (por exemplo, "12/06/2024 14:30 - Temp: 25°C, Ensolarado").
 
 # Como rodar o projeto
 
+É necessário uma chave do WeatherAPI (https://www.weatherapi.com/) para rodar o projeto. Após obter a chave, faça o seguinte:
+
 ```bash
 # Clone o repositório
 
@@ -40,6 +42,12 @@ $ cd climatempo
 # Instale as dependências
 
 $ npm install
+
+# Copie o arquivo .env.example para .env
+
+$ cp .env.example .env
+
+# Abra o arquivo .env e adicione a chave da WeatherAPI
 
 # Execute o projeto
 
