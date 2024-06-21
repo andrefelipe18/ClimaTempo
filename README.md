@@ -31,7 +31,7 @@ meteorológicas (por exemplo, "12/06/2024 14:30 - Temp: 25°C, Ensolarado").
 ```bash
 # Clone o repositório
 
-$ git clone {{url}} climatempo
+$ git clone https://github.com/andrefelipe18/ClimaTempo.git climatempo
 
 # Acesse a pasta do projeto no terminal/cmd
 
