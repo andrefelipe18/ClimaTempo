@@ -25,3 +25,8 @@ do tempo atual.
 
 2. Histórico de Consultas: - Exibir uma lista das consultas anteriores armazenadas. - Cada item da lista deve mostrar a data/hora da consulta e um resumo das condições 
 meteorológicas (por exemplo, "12/06/2024 14:30 - Temp: 25°C, Ensolarado").
+
+# Como rodar o projeto
+
+```bash
+# Clone o repositório

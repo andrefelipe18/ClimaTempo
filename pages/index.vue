@@ -34,21 +34,25 @@ const getWeather = async () => {
     icon: data.current.condition.icon,
     temp_c: data.current.temp_c,
     feelslike_c: data.current.feelslike_c,
-    last_updated: data.current.last_updated
+    last_updated: data.current.last_updated,
+    consulted_at: new Date().toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    })
   };
 
   const { value } = await Preferences.get({ key: "lastWeather" });
 
-  debug.value = JSON.stringify(value);
-
-  //Se já existir um valor, adiciona mais um
   if (value) {
     await Preferences.set({
       key: "lastWeather",
       value: JSON.stringify([...JSON.parse(value), formattedData])
     });
   } else {
-    //Se não existir cria um array com o valor
     await Preferences.set({
       key: "lastWeather",
       value: JSON.stringify([formattedData])
@@ -59,7 +63,7 @@ const getWeather = async () => {
 };
 
 const previousWeather = async () => {
-  await navigateTo("/previousweathers");
+  await navigateTo("/history");
 };
 
 </script>
@@ -70,25 +74,33 @@ const previousWeather = async () => {
         <ion-title>ClimaTempo App (Nuxt + Ionic)</ion-title>
       </ion-toolbar>
     </ion-header>
+
     <ion-content>
-      <ion-list>
-        <ion-item v-if="weatherInfos">
-          <ion-thumbnail>
-            <ion-img :src="weatherInfos.icon" />
-          </ion-thumbnail>
-          <ion-label>
-            <h2>{{ weatherInfos.condition }}</h2>
-            <p>
-              Temperatura: {{ weatherInfos.temp_c }}°C
-              <br />
-              Sensação Térmica: {{ weatherInfos.feelslike_c }}°C
-              <br />
-              Atualizado em: {{ weatherInfos.last_updated }}
-            </p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+      <ion-item v-if="weatherInfos">
+        <ion-thumbnail>
+          <ion-img :src="weatherInfos.condition.icon" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ weatherInfos.condition.text }}</h2>
+          <p>
+            Temperatura: {{ weatherInfos.temp_c }}°C
+            <br />
+            Sensação Térmica: {{ weatherInfos.feelslike_c }}°C
+            <br />
+            Atualizado em: {{ weatherInfos.last_updated }}
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item v-else>
+        <ion-label>
+          <h2>Obtenha o clima</h2>
+        </ion-label>
+      </ion-item>
     </ion-content>
-    <ion-button @click="getLocation">Obter Clima</ion-button>
+
+    <div class="w-full p-2">
+      <ion-button class="w-full" @click="previousWeather()">Histórico</ion-button>
+      <ion-button class="w-full" @click="getLocation()">Obter Clima</ion-button>
+    </div>
   </ion-page>
 </template>
