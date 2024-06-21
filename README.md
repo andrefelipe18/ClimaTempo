@@ -30,3 +30,22 @@ meteorológicas (por exemplo, "12/06/2024 14:30 - Temp: 25°C, Ensolarado").
 
 ```bash
 # Clone o repositório
+
+$ git clone {{url}} climatempo
+
+# Acesse a pasta do projeto no terminal/cmd
+
+$ cd climatempo
+
+# Instale as dependências
+
+$ npm install
+
+# Execute o projeto
+
+$ npx ionic cap run android --livereload --external # Para rodar no Android
+
+$ npx ionic cap run ios --livereload --external # Para rodar no IOS
+
+# O aplicativo será aberto no emulador ou no dispositivo conectado automaticamente, com o live reload ativado
+```
