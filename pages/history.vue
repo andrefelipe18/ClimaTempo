@@ -32,11 +32,7 @@ onMounted(() => {
 
 <template>
   <ion-page>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Previsões Anteriores</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <Header title="Histórico" />
     <ion-content>
       <ion-list>
         <ion-item v-for="weather in weatherInfos" :key="weather.consulted_at">
